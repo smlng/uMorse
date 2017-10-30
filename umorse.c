@@ -178,6 +178,8 @@ static inline char _is_stop(const char s)
 
 size_t _encode_compact(uint16_t cc, uint8_t *code, size_t clen, size_t cpos)
 {
+    assert (cpos < clen);
+
     unsigned shift = 0;
 
     while (((code[cpos] >> (shift * UMORSE_SHIFT)) > 0) && (shift < 4)){
@@ -203,11 +205,14 @@ size_t _encode_compact(uint16_t cc, uint8_t *code, size_t clen, size_t cpos)
         /* add inter char gap */
         code[cpos] |= (uint8_t)UMORSE_END_CHAR << (UMORSE_SHIFT * shift);
     }
+
     return cpos;
 }
 
 size_t _encode_aligned(uint16_t cc, uint8_t *code, size_t clen, size_t cpos)
 {
+    assert (cpos < clen);
+
     UMORSE_DEBUG ("cc=0x%04x, cpos=%2lu\n", cc, cpos);
 
     code[cpos++] = (uint8_t)(cc & 0xFF);
@@ -219,6 +224,7 @@ size_t _encode_aligned(uint16_t cc, uint8_t *code, size_t clen, size_t cpos)
         /* add inter char gap */
         code[cpos++] = (uint8_t)(UMORSE_END_CHAR);
     }
+
     return cpos;
 }
 
@@ -284,6 +290,13 @@ int umorse_encode_aligned(const char *text, size_t tlen,
 
 int umorse_decode(const uint8_t *code, size_t clen, char *text, size_t tlen)
 {
+    (void) code;
+    (void) clen;
+    (void) text;
+    (void) tlen;
+
+    UMORSE_DEBUG("NOT IMPLEMENTED YET!\n");
+
     return 0;
 }
 
@@ -311,8 +324,8 @@ void _process_spaces (const umorse_out_t *out, size_t spaces)
 int umorse_output(const umorse_out_t *out, const uint8_t *code, size_t clen)
 {
     size_t spaces = 0;
-    for (int i = 0; i < clen; ++i) {
-        for (int j = 0; j < 4; ++j) {
+    for (size_t i = 0; i < clen; ++i) {
+        for (unsigned j = 0; j < 4; ++j) {
             uint8_t cc = (code[i] >> (j * UMORSE_SHIFT)) & UMORSE_MASK;
             if (cc == UMORSE_END_CHAR) {
                 ++spaces;
