@@ -1,0 +1,12 @@
+/*
+ * Copyright (C) 2017 Sebastian Meiling <s@mlng.net>
+ *
+ * This file is part of uMorse, see
+ * https://github.com/smlng/uMorse
+ *
+ * This file is subject to the terms and conditions of the MIT License.
+ * See the file LICENSE in the top level directory for more details.
+ *
+ * If you did not receive a copy of the license file, see
+ * https://choosealicense.com/licenses/mit/
+ */
