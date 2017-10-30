@@ -179,6 +179,7 @@ static inline char _is_stop(const char s)
 size_t _encode_compact(uint16_t cc, uint8_t *code, size_t clen, size_t cpos)
 {
     assert (cpos < clen);
+    (void) clen;
 
     unsigned shift = 0;
 
@@ -212,6 +213,7 @@ size_t _encode_compact(uint16_t cc, uint8_t *code, size_t clen, size_t cpos)
 size_t _encode_aligned(uint16_t cc, uint8_t *code, size_t clen, size_t cpos)
 {
     assert (cpos < clen);
+    (void) clen;
 
     UMORSE_DEBUG ("cc=0x%04x, cpos=%2lu\n", cc, cpos);
 
