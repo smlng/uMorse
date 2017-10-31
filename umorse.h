@@ -60,15 +60,16 @@ extern "C" {
 /** @} */
 
 /**
- * @name Configuration parameters, offset, bit masks and shifts
+ * @name Configuration parameters, offset, flags, bit masks and shifts
  * @{
  */
 #define UMORSE_SHIFT            (0x2)
 #define UMORSE_MASK             (0x3)
+#define UMORSE_MASK_COUNT       (0x0F)
 #define UMORSE_LETTER_OFFSET    (65U)   /**< 'A' */
 #define UMORSE_NUMBER_OFFSET    (48U)   /**< '0' */
-#define UMORSE_DELAY_MASK       (0x80)
-#define UMORSE_COUNT_MASK       (0x0F)
+#define UMORSE_FLAG_NODELAY     (0x80)
+
 #define UMORSE_THRESHOLD        (2U)
 /** @} */
 
@@ -84,7 +85,9 @@ extern "C" {
  * @name Timing parameters, in milli seconds
  * @{
  */
+#ifndef UMORSE_DELAY_DIT
 #define UMORSE_DELAY_DIT        (60U)
+#endif
 #define UMORSE_DELAY_DAH        (3 * UMORSE_DELAY_DIT)
 #define UMORSE_DELAY_CHAR       (3 * UMORSE_DELAY_DIT)
 #define UMORSE_DELAY_WORD       (7 * UMORSE_DELAY_DIT)
@@ -173,11 +176,13 @@ int umorse_decode(const uint8_t *code, size_t clen, char *text, size_t tlen);
  * @param[in]   out     Interface or device to output morse encoded buffer
  * @param[in]   code    Buffer with morse encoded text
  * @param[in]   clen    Length of morse encoded text
+ * @param[in]   flags   Pass optional params, with [0-3]=count and [4-7]=flags
  *
  * @returns     0 or >0 on success
  * @returns     <0 on error
  */
-int umorse_output(const umorse_out_t *out, const uint8_t *code, size_t clen);
+int umorse_output(const umorse_out_t *out,
+                  const uint8_t *code, size_t clen, uint8_t flags);
 
 #ifdef __cplusplus
 }

@@ -51,13 +51,13 @@ int test_umorse_print(void)
 	memset(code, 0, CODE_LEN);
 	printf("> using aligned encoding:\n");
 	int ret1 = umorse_encode_aligned(text, sizeof(text), code, sizeof(code));
-	umorse_output(&out, code, ret1);
+	umorse_output(&out, code, ret1, 0x0);
 	printf("> encoded length=%d\n", ret1);
 
 	memset(code, 0, CODE_LEN);
 	int ret2 = umorse_encode_compact(text, sizeof(text), code, sizeof(code));
 	printf("> using compact encoding:\n");
-	umorse_output(&out, code, ret2);
+	umorse_output(&out, code, ret2, 0x0);
 	printf("> encoded length=%d\n", ret2);
 	return 0;
 }

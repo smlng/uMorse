@@ -41,7 +41,7 @@ void umorse_print_dit(void *args, uint8_t flags)
     (void) args;
 
     UMORSE_PRINT(".");
-    if (flags & UMORSE_DELAY_MASK) {
+    if (!(flags & UMORSE_FLAG_NODELAY)) {
         UMORSE_MSLEEP(UMORSE_DELAY_DIT);
     }
 }
@@ -51,7 +51,7 @@ void umorse_print_dah(void *args, uint8_t flags)
     (void) args;
 
     UMORSE_PRINT("_");
-    if (flags & UMORSE_DELAY_MASK) {
+    if (!(flags & UMORSE_FLAG_NODELAY)) {
         UMORSE_MSLEEP(UMORSE_DELAY_DAH);
     }
 }
@@ -60,24 +60,20 @@ void umorse_print_nil(void *args, uint8_t flags)
 {
     (void) args;
 
-    uint8_t cnt = flags & UMORSE_COUNT_MASK;
-    switch (cnt) {
-        case 1:
-            UMORSE_PRINT(" ");
-            break;
-        case 6:
-            UMORSE_PRINT(" / ");
-            break;
-        case 7:
-            UMORSE_PRINT("\n");
-            break;
-        default:
-            break;
+    uint8_t cnt = flags & UMORSE_MASK_COUNT;
+    if (cnt > 7) {
+        UMORSE_PRINT("\n");
     }
-    if (flags & UMORSE_DELAY_MASK) {
-        while (cnt) {
-            UMORSE_MSLEEP(UMORSE_DELAY_DAH);
-            --cnt;
+    else if (cnt > 3) {
+        UMORSE_PRINT(" / ");
+    }
+    else if (cnt > 1) {
+        UMORSE_PRINT(" ");
+    }
+
+    if (!(flags & UMORSE_FLAG_NODELAY)) {
+        while (cnt--) {
+            UMORSE_MSLEEP(UMORSE_DELAY_DIT);
         }
     }
 }

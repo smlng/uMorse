@@ -1,4 +1,4 @@
-INC=-I../
+CFLAGS += -I../
 
 .PHONY: all
 
@@ -8,13 +8,13 @@ test: main.o umorse.o print.o
 	gcc -o test main.o print.o umorse.o
 
 main.o: main.c
-	gcc $(INC) -c $< -o $@
+	gcc $(CFLAGS) -c $< -o $@
 
 umorse.o: ../umorse.c
-	gcc $(INC) -c $< -o $@
+	gcc $(CFLAGS) -c $< -o $@
 
 print.o: ../print.c
-	gcc $(INC) -c $< -o $@
+	gcc $(CFLAGS) -c $< -o $@
 
 clean:
 	rm *.o test

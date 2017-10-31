@@ -302,28 +302,21 @@ int umorse_decode(const uint8_t *code, size_t clen, char *text, size_t tlen)
     return 0;
 }
 
-void _process_spaces (const umorse_out_t *out, size_t spaces)
+void _process_spaces (const umorse_out_t *out, size_t spaces, uint8_t flags)
 {
-    switch (spaces) {
-        case 1:
-            out->nil(NULL, 0x1 | UMORSE_DELAY_MASK);
-            break;
-        case 2:
-        case 3:
-            out->nil(NULL, 0x6 | UMORSE_DELAY_MASK);
-            break;
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-            out->nil(NULL, 0x7 | UMORSE_DELAY_MASK);
-            break;
-        default:
-            break;
+    if (spaces > 3) {
+        out->nil(out->params, 0xF | flags);
+    }
+    else if (spaces > 1) {
+        out->nil(out->params, 0x7 | flags);
+    }
+    else if (spaces > 0) {
+        out->nil(out->params, 0x3 | flags);
     }
 }
 
-int umorse_output(const umorse_out_t *out, const uint8_t *code, size_t clen)
+int umorse_output(const umorse_out_t *out,
+                  const uint8_t *code, size_t clen, uint8_t flags)
 {
     size_t spaces = 0;
     for (size_t i = 0; i < clen; ++i) {
@@ -333,14 +326,16 @@ int umorse_output(const umorse_out_t *out, const uint8_t *code, size_t clen)
                 ++spaces;
             }
             else if (cc != UMORSE_NUL) {
-                _process_spaces(out, spaces);
+                _process_spaces(out, spaces, flags);
                 spaces = 0;
                 switch (cc) {
                     case UMORSE_DIT:
-                        out->dit(NULL, UMORSE_DELAY_MASK);
+                        out->dit(out->params, flags);
+                        out->nil(out->params, 0x1 | flags);
                         break;
                     case UMORSE_DAH:
-                        out->dah(NULL, UMORSE_DELAY_MASK);
+                        out->dah(out->params, flags);
+                        out->nil(out->params, 0x1 | flags);
                         break;
                     default:
                         break;
@@ -348,6 +343,6 @@ int umorse_output(const umorse_out_t *out, const uint8_t *code, size_t clen)
             }
         }
     }
-    _process_spaces(out, spaces);
+    _process_spaces(out, spaces, flags);
     return 0;
 }
