@@ -29,7 +29,7 @@
 
 #include "umorse.h"
 
-const static uint8_t umorse_letters[] = {
+static const uint8_t umorse_letters[] = {
     (UMORSE_DIT | (UMORSE_DAH << (1 * UMORSE_SHIFT))),  /**< ._     = A */
     (UMORSE_DAH | (UMORSE_DIT << (1 * UMORSE_SHIFT))
                 | (UMORSE_DIT << (2 * UMORSE_SHIFT))
@@ -90,7 +90,7 @@ const static uint8_t umorse_letters[] = {
                 | (UMORSE_DIT << (3 * UMORSE_SHIFT))),  /**< __..   = Z */
 };
 
-const static uint16_t umorse_numbers[] = {
+static const uint16_t umorse_numbers[] = {
     (UMORSE_DAH | (UMORSE_DAH << (1 * UMORSE_SHIFT))
                 | (UMORSE_DAH << (2 * UMORSE_SHIFT))
                 | (UMORSE_DAH << (3 * UMORSE_SHIFT))

@@ -32,14 +32,14 @@
 
 #define CODE_LEN	(128U)
 
-const static umorse_out_t out = {
+static const umorse_out_t out = {
 	.dit = umorse_print_dit,
 	.dah = umorse_print_dah,
 	.nil = umorse_print_nil,
 	.params = NULL
 };
 
-const static char text[] = "Hello World!\nThis is uMorse.\n0123456789";
+ static const char text[] = "Hello World!\nThis is uMorse.\n0123456789";
 
 int test_umorse_print(void)
 {
