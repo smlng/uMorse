@@ -160,7 +160,7 @@ int umorse_encode_compact(const char *text, size_t tlen,
 /**
  * @brief   Decodes a given morse code into a text string
  *
- * @param[in    code    Input buffer with encoded text
+ * @param[in]   code    Input buffer with encoded text
  * @param[in]   clen    Length of input buffer
  * @param[out]  text    Ouptut for decoded text string
  * @param[in]   tlen    Length of output string buffer
